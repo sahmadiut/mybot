@@ -1,20 +1,50 @@
 import os
 import telebot
 import constants
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup
 
 bot = telebot.TeleBot(constants.API_KEY)
 
+
 keyboard = InlineKeyboardMarkup()
-button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_data='option1')
-button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='option2')
-button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='option3')
-button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='option4')
+button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_data='🔰  خرید اشتراک  🔰')
+button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='📝   پشتیبانی  📝')
+button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='📜  آموزش‌ها')
+button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='📊 حساب‌های من')
 keyboard.add(button1, button2, button3, button4)
+
+
+keyboard2 = InlineKeyboardMarkup()
+chanelbutton = InlineKeyboardButton('🔰  عضویت در کانال  🔰', url='https://t.me/vi2ray')
+checkButton = InlineKeyboardButton('تایید عضویت  ✅', callback_data='/start')
+keyboard2.add(chanelbutton, checkButton)
+
+# check if the user is member of the channel
+def is_member(user_id):
+    channel_id = constants.CHANNEL_ID
+    try:
+        channel_member = bot.get_chat_member(channel_id, user_id)
+        if channel_member.status == 'member' or channel_member.status == 'creator' or channel_member.status == 'administrator':
+            return True
+        else:
+            return False
+    except:
+        return False
+
+
+def member_only(message):
+    if not is_member(message.from_user.id):
+        bot.send_message(message.chat.id, 'برای استفاده از ربات باید عضو کانال @vi2ray باشید.', reply_markup=chanelbutton)
+        return False
+    else:
+        return True
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message, 'Hello, World!', reply_markup=keyboard)
+    if member_only(message):
+        bot.send_message(message.chat.id, 'به ربات خرید اشتراک وی‌پی‌آری خوش‌آمدید.', reply_markup=keyboard)
+
 
 
 @bot.callback_query_handler(func=lambda call: True)
