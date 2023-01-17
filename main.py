@@ -10,11 +10,12 @@ button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_dat
 button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='option2')
 button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='option3')
 button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='option4')
-keyboard.add(button1, button2)
+keyboard.add(button1, button2, button3, button4)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message, 'Hello, World!', reply_markup=keyboard)
+    bot.reply_to(message, 'Hello, World!')
+
 
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
