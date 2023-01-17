@@ -5,9 +5,16 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 bot = telebot.TeleBot(constants.API_KEY)
 
+keyboard = InlineKeyboardMarkup()
+button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_data='option1')
+button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='option2')
+button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='option3')
+button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='option4')
+keyboard.add(button1, button2)
+
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message, 'Hello, World!')
+    bot.reply_to(message, 'Hello, World!', reply_markup=keyboard)
 
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
@@ -16,26 +23,5 @@ def echo_message(message):
     bot.reply_to(message, message.text)
 
 
-# use in for delete with the necessary scope and language_code if necessary
-bot.delete_my_commands(scope=None, language_code=None)
-
-
-def gen_markup():
-    markup = InlineKeyboardMarkup()
-    markup.row_width = 2
-    markup.add(InlineKeyboardButton("Yes", callback_data="cb_yes"),
-                               InlineKeyboardButton("No", callback_data="cb_no"))
-    return markup
-
-@bot.callback_query_handler(func=lambda call: True)
-def callback_query(call):
-    if call.data == "cb_yes":
-        bot.answer_callback_query(call.id, "Answer is Yes")
-    elif call.data == "cb_no":
-        bot.answer_callback_query(call.id, "Answer is No")
-
-@bot.message_handler(func=lambda message: True)
-def message_handler(message):
-    bot.send_message(message.chat.id, "Yes/no?", reply_markup=gen_markup())
 
 bot.polling()
