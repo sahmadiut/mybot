@@ -11,12 +11,12 @@ button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_dat
 button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='📝   پشتیبانی  📝')
 button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='📜  آموزش‌ها')
 button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='📊 حساب‌های من')
-keyboard.add(button1, button2, button3, button4)
+keyboard.add(button2, button3, button4, button1)
 
 
 keyboard2 = InlineKeyboardMarkup()
 chanelbutton = InlineKeyboardButton('🔰  عضویت در کانال  🔰', url='https://t.me/vi2ray')
-checkButton = InlineKeyboardButton('تایید عضویت  ✅', callback_data='/start')
+checkButton = InlineKeyboardButton('تایید عضویت  ✅', callback_data='تایید عضویت  ✅')
 keyboard2.add(chanelbutton, checkButton)
 
 # check if the user is member of the channel
@@ -42,23 +42,8 @@ def member_only(message):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    if member_only(message):
+    if not member_only(message):
         bot.send_message(message.chat.id, 'به ربات خرید اشتراک وی‌پی‌آری خوش‌آمدید.', reply_markup=keyboard)
-
-
-
-@bot.callback_query_handler(func=lambda call: True)
-def callback_inline(call):
-    if call.message:
-        if call.data == 'option1':
-            bot.send_message(call.message.chat.id, 'option1')
-        elif call.data == 'option2':
-            bot.send_message(call.message.chat.id, 'option2')
-        elif call.data == 'option3':
-            bot.send_message(call.message.chat.id, 'option3')
-        elif call.data == 'option4':
-            bot.send_message(call.message.chat.id, 'option4')
-
 
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
