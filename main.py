@@ -25,6 +25,7 @@ def is_member(user_id):
     try:
         channel_member = bot.get_chat_member(channel_id, user_id)
         print(channel_member)
+        bot.send_message(user_id, channel_member.status)
         if channel_member.status == 'member' or channel_member.status == 'creator' \
                 or channel_member.status == 'administrator':
             return True
