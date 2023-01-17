@@ -17,6 +17,18 @@ def start(message):
     bot.reply_to(message, 'Hello, World!')
 
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    if call.message:
+        if call.data == 'option1':
+            bot.send_message(call.message.chat.id, 'option1')
+        elif call.data == 'option2':
+            bot.send_message(call.message.chat.id, 'option2')
+        elif call.data == 'option3':
+            bot.send_message(call.message.chat.id, 'option3')
+        elif call.data == 'option4':
+            bot.send_message(call.message.chat.id, 'option4')
+
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
 @bot.message_handler(func=lambda message: True)
