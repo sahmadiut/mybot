@@ -34,7 +34,7 @@ def is_member(user_id):
 
 def member_only(message):
     if not is_member(message.from_user.id):
-        bot.send_message(message.chat.id, 'برای استفاده از ربات باید عضو کانال @vi2ray باشید.', reply_markup=chanelbutton)
+        bot.send_message(message.chat.id, 'برای استفاده از ربات باید عضو کانال ما باشید.', reply_markup=keyboard2)
         return False
     else:
         return True
