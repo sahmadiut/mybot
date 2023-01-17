@@ -1,6 +1,7 @@
 import os
 import telebot
 import constants
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 bot = telebot.TeleBot(constants.API_KEY)
 
@@ -18,18 +19,23 @@ def echo_message(message):
 # use in for delete with the necessary scope and language_code if necessary
 bot.delete_my_commands(scope=None, language_code=None)
 
-bot.set_my_commands(
-    commands=[
-        telebot.types.BotCommand("command1", "command1 description"),
-        telebot.types.BotCommand("command2", "command2 description")
-    ],
-    # scope=telebot.types.BotCommandScopeChat(12345678)  # use for personal command for users
-    # scope=telebot.types.BotCommandScopeAllPrivateChats()  # use for all private chats
-)
 
-# check command
-cmd = bot.get_my_commands(scope=None, language_code=None)
-print([c.to_json() for c in cmd])
+def gen_markup():
+    markup = InlineKeyboardMarkup()
+    markup.row_width = 2
+    markup.add(InlineKeyboardButton("Yes", callback_data="cb_yes"),
+                               InlineKeyboardButton("No", callback_data="cb_no"))
+    return markup
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_query(call):
+    if call.data == "cb_yes":
+        bot.answer_callback_query(call.id, "Answer is Yes")
+    elif call.data == "cb_no":
+        bot.answer_callback_query(call.id, "Answer is No")
+
+@bot.message_handler(func=lambda message: True)
+def message_handler(message):
+    bot.send_message(message.chat.id, "Yes/no?", reply_markup=gen_markup())
 
 bot.polling()
