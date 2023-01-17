@@ -24,7 +24,9 @@ def is_member(user_id):
     channel_id = constants.CHANNEL_ID
     try:
         channel_member = bot.get_chat_member(channel_id, user_id)
-        if channel_member.status == 'member' or channel_member.status == 'creator' or channel_member.status == 'administrator':
+        print(channel_member)
+        if channel_member.status == 'member' or channel_member.status == 'creator' \
+                or channel_member.status == 'administrator':
             return True
         else:
             return False
