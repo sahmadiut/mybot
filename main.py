@@ -7,10 +7,10 @@ bot = telebot.TeleBot(constants.API_KEY)
 
 
 keyboard = InlineKeyboardMarkup()
-button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_data='🔰  خرید اشتراک  🔰')
-button2 = InlineKeyboardButton('📝   پشتیبانی  📝', callback_data='📝   پشتیبانی  📝')
-button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='📜  آموزش‌ها')
-button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='📊 حساب‌های من')
+button1 = InlineKeyboardButton('🔰  خرید اشتراک  🔰', callback_data='a')
+button2 = InlineKeyboardButton('📝   پشتیبانی  📝', url='https://t.me/sajjad_ahmadi_sh')
+button3 = InlineKeyboardButton('📜  آموزش‌ها', callback_data='b')
+button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='c')
 keyboard.add(button2, button3, button4, button1)
 
 
