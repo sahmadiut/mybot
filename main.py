@@ -14,39 +14,12 @@ button4 = InlineKeyboardButton('📊 حساب‌های من', callback_data='�
 keyboard.add(button2, button3, button4, button1)
 
 
-keyboard2 = InlineKeyboardMarkup()
-chanelbutton = InlineKeyboardButton('🔰  عضویت در کانال  🔰', url='https://t.me/vi2ray')
-checkButton = InlineKeyboardButton('تایید عضویت  ✅', callback_data='تایید عضویت  ✅')
-keyboard2.add(chanelbutton, checkButton)
-
-# check if the user is member of the channel
-def is_member(user_id):
-    channel_id = constants.CHANNEL_ID
-    try:
-        channel_member = bot.get_chat_member(channel_id, user_id)
-        print(channel_member)
-        bot.send_message(user_id, channel_member.status)
-        if channel_member.status == 'member' or channel_member.status == 'creator' \
-                or channel_member.status == 'administrator':
-            return True
-        else:
-            return False
-    except:
-        return False
-
-
-def member_only(message):
-    if not is_member(message.from_user.id):
-        bot.send_message(message.chat.id, 'برای استفاده از ربات باید عضو کانال ما باشید.', reply_markup=keyboard2)
-        return False
-    else:
-        return True
-
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    if not member_only(message):
-        bot.send_message(message.chat.id, 'به ربات خرید اشتراک وی‌پی‌آری خوش‌آمدید.', reply_markup=keyboard)
+    bot.send_message(message.chat.id, 'سلام.\n'
+                                      'به فروشگاه vpn پرسرعت V2ray خوش آمدید.\n'
+                                      'برای استفاده از اطلاع‌رسانی‌ها و مطالب آموزنده، لطفا در کانال ما ( @vi2ray ) عضو شوید.\n', reply_markup=keyboard)
 
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
@@ -54,6 +27,20 @@ def start(message):
 def echo_message(message):
     bot.reply_to(message, message.text)
 
+
+# list of commands
+# use in for delete with the necessary scope and language_code if necessary
+bot.delete_my_commands(scope=None, language_code=None)
+
+bot.set_my_commands(
+    commands=[
+        telebot.types.BotCommand("/start", "منوی اصلی"),
+    ],
+)
+
+# check command
+cmd = bot.get_my_commands(scope=None, language_code=None)
+print([c.to_json() for c in cmd])
 
 
 bot.polling()
